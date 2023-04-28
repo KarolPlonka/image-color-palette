@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import './PaletteDisplay.css'
 import { Copy, CheckCircle } from 'react-feather';
 
@@ -41,13 +41,13 @@ const ColorDiv: React.FC<{ color: PaletteColor; percentage: number, acc: number 
     transition: `all ${2/acc}s ease-out`
   };
 
-  let conStyle: any = {left: `100%`};
-  if(percentage > 0.5) conStyle = {right: `0%`};
+  let position: any = {left: `100%`};
+  if(percentage > 0.5) position = {right: `0%`};
   
 
   return (<>
     <div className="color-div" style={divStyle}>
-      <div className="color-values-container" style={conStyle}>
+      <div className="color-values-container" style={position}>
         <ColorValue
           title="RGB:"
           value={`rgb(${color.r}, ${color.g}, ${color.b})`}

@@ -7,7 +7,8 @@
     height: 120px;
     padding: 20px;
     position: relative;
-    
+    box-shadow: 0 0px 15px rgba(0, 0, 0);
+    margin-bottom: -5px;
 }
 
 .color-values-container{
@@ -19,9 +20,11 @@
     border: 2px solid #000000;
     border-radius: 10px;
     padding: 5px;
-    background-color: #aeb4be;
+    background-color: #d2d5db;
     white-space: nowrap;
-
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0px 15px rgba(0, 0, 0);
 }
 
 .color-value-wrapper{
@@ -31,9 +34,8 @@
 }
 
 .copy-icon{
-    margin-left: 10px;
+    margin-left: 5px;
     margin-bottom: -3px;
-    transition: all 0.3s ease;
 }
 
 .copy-icon:hover {
