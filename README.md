@@ -2,4 +2,4 @@
 
 Fast extraction of collor palette from image ( O(n) ).
 
-https://github.com/KarolPlonka/image-color-palette
+https://karolplonka.github.io/image-color-palette/
