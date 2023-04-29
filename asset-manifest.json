@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/image-color-palette/static/css/main.72318251.css",
-    "main.js": "/image-color-palette/static/js/main.5ea8eb59.js",
+    "main.css": "/image-color-palette/static/css/main.a3823256.css",
+    "main.js": "/image-color-palette/static/js/main.5701670f.js",
     "static/js/787.f76078b3.chunk.js": "/image-color-palette/static/js/787.f76078b3.chunk.js",
     "static/media/bird.bmp": "/image-color-palette/static/media/bird.436386d9a111dd524424.bmp",
     "static/media/github.webp": "/image-color-palette/static/media/github.805290696148170298c8.webp",
     "static/media/react.svg": "/image-color-palette/static/media/react.16d32a771ac3a4154b3735d522602b8b.svg",
     "index.html": "/image-color-palette/index.html",
-    "main.72318251.css.map": "/image-color-palette/static/css/main.72318251.css.map",
-    "main.5ea8eb59.js.map": "/image-color-palette/static/js/main.5ea8eb59.js.map",
+    "main.a3823256.css.map": "/image-color-palette/static/css/main.a3823256.css.map",
+    "main.5701670f.js.map": "/image-color-palette/static/js/main.5701670f.js.map",
     "787.f76078b3.chunk.js.map": "/image-color-palette/static/js/787.f76078b3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.72318251.css",
-    "static/js/main.5ea8eb59.js"
+    "static/css/main.a3823256.css",
+    "static/js/main.5701670f.js"
   ]
 }
