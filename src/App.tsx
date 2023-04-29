@@ -66,9 +66,6 @@ function App() {
     img.src = image;
 
     img.onload = () => {
-      // canvas.width = canvasWrapper.clientWidth;
-      // canvas.height = canvasWrapper.clientHeight;
-
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
       const paletteArray = getImagePalette(imageData, acceleration, colorCount);
