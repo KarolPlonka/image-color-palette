@@ -38,6 +38,7 @@ function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [exampleImageIndex, setExampleImageIndex] = useState<number>(1);
   const [gradient, setGradient] = useState<string>('');
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -55,7 +56,8 @@ function App() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !image) return;
+    const canvasWrapper = canvasWrapperRef.current;
+    if (!canvas || !image || !canvasWrapper) return;
 
     const context = canvas.getContext("2d", { willReadFrequently: true });
     if (!context) return;
@@ -64,8 +66,9 @@ function App() {
     img.src = image;
 
     img.onload = () => {
-      canvas.height = 250;
-      canvas.width = img.width * (canvas.height / img.height);
+      // canvas.width = canvasWrapper.clientWidth;
+      // canvas.height = canvasWrapper.clientHeight;
+
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
       const paletteArray = getImagePalette(imageData, acceleration, colorCount);
@@ -81,6 +84,7 @@ function App() {
       setGradient(gradientString);
       setPalette(newPalette);
     };
+    
   }, [canvasRef, image, colorCount, acceleration]);
 
   useEffect(() => {
@@ -109,6 +113,7 @@ function App() {
         <div className='column'>
           <div
             className="canvas-wrapper"
+            ref = {canvasWrapperRef}
             style = {{background: gradient}}
             onMouseEnter={() => setIsHoveringAtCanvas(true)}
             onMouseLeave={() => setIsHoveringAtCanvas(false)}
