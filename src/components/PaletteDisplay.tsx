@@ -66,20 +66,9 @@ const ColorDiv: React.FC<{ color: PaletteColor; percentage: number, acc: number 
 };
 
 const PaletteDisplay: React.FC<{ palette: PaletteColor[]; acc: number }> = ({ palette, acc }) => {
-  // const [colorCount, setColorCount] = useState<number>(-1);
   const paletteContainerRef = useRef<HTMLDivElement>(null);
 
   const pixelSum = palette.reduce((sum, color) => sum + color.count, 0);
-
-  // useEffect(() => {
-  //   if(palette.length === colorCount) return;
-
-  //   setColorCount(palette.length);
-
-  //   if (!paletteContainerRef.current) return;
-  //   paletteContainerRef.current.style.height = `${paletteContainerRef.current. }px`;
-
-  // }, [palette, colorCount]);
 
   return (
     <div className="palette-container" ref={paletteContainerRef}>

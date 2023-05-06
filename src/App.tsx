@@ -132,7 +132,7 @@ function App() {
     <div className="App">
       <div className='menu'>
           <div className='menu-left'>
-            <a href='/'>
+            <a href='https://karolplonka.github.io/image-color-palette/'>
               <div className='title-wrapper'>
               <img src={logo} alt='logo' className='logo' />
               <h1>Image Color Palette Exctractor</h1>
@@ -209,10 +209,10 @@ function App() {
                 </label>
                 <Tooltip anchorSelect="#acceleration-info">
                   <div className='tooltip-msg'>
-                    Acceleration variable will reduce the duration of the algorithm,
+                    Acceleration variable will reduce the duration of the algorithm, <br/>
                     but it will also reduce the accuracy of the results.
                     <br/><br/>
-                    When set to 1, the algorithm will check every pixel of the image.
+                    When set to 1, the algorithm will check every pixel of the image. <br/>
                     When set to 2, it will check every second pixel, and so on.
                   </div>
                 </Tooltip>
