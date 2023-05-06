@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import './PaletteDisplay.css'
 import { Copy, CheckCircle } from 'react-feather';
 
@@ -14,7 +14,7 @@ const ColorValue: React.FC<{  title: string, value: string }> = ({ title, value 
   const [icon, setIcon] = useState(<Copy size={18} className='copy-icon' />);
 
   const copyValue = () => {
-    navigator.clipboard.writeText(value)
+    handleCopyToClipboard(value);
     setIcon(<CheckCircle size={18} className='copied-icon'/>);
     setTimeout(() => {
       setIcon(<Copy size={18} className='copy-icon' />);
@@ -32,70 +32,81 @@ const ColorValue: React.FC<{  title: string, value: string }> = ({ title, value 
 };
 
 const ColorDiv: React.FC<{ color: PaletteColor; percentage: number, acc: number }> = ({ color, percentage, acc }) => {
-
-  // navigator.clipboard.writeText("stringToCopy");
+  const [isInside, setIsInside] = useState(false);
 
   const divStyle = {
     width: `${percentage * 100}%`,
     backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`,
-    transition: `all ${2/acc}s ease-out`
+    transition: `width ${2 / acc}s ease-out, background-color 1s ease-in`,
   };
 
-  let position: any = {left: `100%`};
-  if(percentage > 0.5) position = {right: `0%`};
-  
+  useEffect(() => {
+    if (percentage > 0.45) setIsInside(true);
+    else                   setIsInside(false);
+  }, [percentage]);
 
-  return (<>
-    <div className="color-div" style={divStyle}>
-      <div className="color-values-container" style={position}>
-        <ColorValue
-          title="RGB:"
-          value={`rgb(${color.r}, ${color.g}, ${color.b})`}
-        />
-        <ColorValue
-          title="HEX:"
-          value={`#${color.r.toString(16)}${color.g.toString(16)}${color.b.toString(16)}`.toUpperCase()}
-        />
+  const positionStyle = isInside ? { left: `30%` } : { left: `100%` };
+
+  return (
+    <>
+      <div className="color-div" style={divStyle}>
+        <div className={`color-values-container`} style={positionStyle}>
+          <ColorValue
+            title="RGB:"
+            value={`rgb(${color.r}, ${color.g}, ${color.b})`}
+          />
+          <ColorValue
+            title="HEX:"
+            value={`#${color.r.toString(16)}${color.g.toString(16)}${color.b.toString(16)}`.toUpperCase()}
+          />
+        </div>
       </div>
-    </div>
-  </>);
-
-  // if(percentage > 0.5){
-  //   return (<>
-  //     <div className="color-div" style={divStyle}>
-  //       {colorValues}
-  //     </div>
-  //   </>);
-  // }
-  // else {
-  //   return (
-  //     <div className="color-div-container">
-  //       <div className="color-div" style={divStyle}></div>
-  //       <div className="color-div-complement">
-  //         {colorValues}
-  //       </div>
-  //     </div>
-  //   );
-  // }
+    </>
+  );
 };
 
 const PaletteDisplay: React.FC<{ palette: PaletteColor[]; acc: number }> = ({ palette, acc }) => {
+  // const [colorCount, setColorCount] = useState<number>(-1);
+  const paletteContainerRef = useRef<HTMLDivElement>(null);
+
   const pixelSum = palette.reduce((sum, color) => sum + color.count, 0);
 
-  // if(palette.length === 0){
-  //   palette = [{r: 0, g: 0, b: 0, count: 1}];
-  // }
+  // useEffect(() => {
+  //   if(palette.length === colorCount) return;
 
-  return (<>{ 
-    palette.map((color, index) => (
-      <ColorDiv
-        key={index}
-        color={color}
-        percentage = {color.count / pixelSum}
-        acc = {acc}
-      />
-    ))
-  }</>);
+  //   setColorCount(palette.length);
+
+  //   if (!paletteContainerRef.current) return;
+  //   paletteContainerRef.current.style.height = `${paletteContainerRef.current. }px`;
+
+  // }, [palette, colorCount]);
+
+  return (
+    <div className="palette-container" ref={paletteContainerRef}>
+      {
+      palette.map((color, index) => (
+        <ColorDiv
+          key={index}
+          color={color}
+          percentage={color.count / pixelSum}
+          acc={acc}
+        />
+      ))
+      }
+    </div>
+  );
 };
 
 export default PaletteDisplay;
+
+const handleCopyToClipboard = (value: string) => {
+  const tempInput = document.createElement('input');
+  tempInput.value = value;
+  document.body.appendChild(tempInput);
+
+  tempInput.select();
+  tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+  document.execCommand('copy');
+  document.body.removeChild(tempInput);
+};

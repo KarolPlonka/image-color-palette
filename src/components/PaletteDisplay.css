@@ -1,29 +1,51 @@
+.palette-container{
+    border-left: 7px solid #000000;
+    padding: 20px;
+    padding-left: 0px;
+    margin-left: 20px;
+    transition: height 2s ease-in-out;
+}
+
 .color-div-container{
     display: flex;
     flex-wrap: wrap;
 }
 
-.color-div{
-    height: 120px;
-    padding: 20px;
-    position: relative;
-    box-shadow: 0 0px 15px rgba(0, 0, 0);
-    margin-bottom: -5px;
+@keyframes slideIn {
+    0% {    
+        width: 0px;
+        opacity: 0;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    50% {       
+        opacity: 1;
+    }
 }
 
-.color-values-container{
+.color-div{
+    position: relative;
+    height: 100px;
+    padding: 20px;
+    box-shadow: 0 0px 15px rgba(0, 0, 0);
+    margin-top: -3px;
+    margin-bottom: -3px;
+    animation: slideIn 2s ease-out;
+}
+
+.color-values-container {
     position: absolute;
+    transition: left 0.7s ease-out;
 }
 
 .color-value{
-    font-size: 15px;
-    border: 2px solid #000000;
+    font-size: calc(5px + 2vmin);
     border-radius: 10px;
     padding: 5px;
     background-color: #d2d5db;
     white-space: nowrap;
     color: #000;
-    font-weight: 700;
+    font-weight: 500;
     box-shadow: 0 0px 15px rgba(0, 0, 0);
 }
 
@@ -35,23 +57,23 @@
 
 .copy-icon{
     margin-left: 5px;
-    margin-bottom: -3px;
+    margin-bottom: -4px;
 }
 
 .copy-icon:hover {
     cursor: pointer;
-    color: rgb(41, 41, 90);
+    color: rgb(160, 160, 199);
 }
 
 .copied-icon{
-    margin-left: 10px;
+    margin-left: 5px;;
     margin-bottom: -3px;
 }
 
 .color-title{
-    font-size: 18px;
+    font-size: calc(3px + 2vmin);
     font-weight: bold;
-    margin: 10px;
+    margin: 5px;
     text-shadow: rgb(0, 0, 0) 0px 0 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 1px 0 1px, rgb(0, 0, 0) 1px 1px 1px;
 }
 

@@ -12,10 +12,12 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
     "feather-icons": "^4.29.0",
+    "rc-tooltip": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-scripts": "5.0.1",
+    "react-tooltip": "^5.11.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
