@@ -3,7 +3,7 @@ import './App.css';
 import { getImagePalette } from './imagePaletteExctractor'
 import { Upload } from 'react-feather';
 import PaletteDsiplay, { PaletteColor } from './components/PaletteDisplay';
-import { GitHub, Info } from 'react-feather';
+import { GitHub, Info, Plus, Minus } from 'react-feather';
 import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 
@@ -15,6 +15,12 @@ import react from './images/react.svg'
 import github from './images/github.webp'
 import bird from './images/bird.bmp'
 const exampleImages = [react, github, bird];
+
+const minColorCount: number = 1;
+const maxColorCount: number = 16;
+
+const minAcceleration: number = 1;
+const maxAcceleration: number = 8;
 
 function getGradeintString(palette: PaletteColor[]) {
   if (palette.length === 0) return '#000';
@@ -73,7 +79,7 @@ function App() {
 
     img.onload = () => {
       // adjust canvas size to image size
-      if(img.width - canvas.width > img.height - canvas.height) {
+      if (img.width - canvas.width > img.height - canvas.height) {
         canvas.height = img.height * (canvas.width / img.width);
       }
       else {
@@ -118,9 +124,17 @@ function App() {
     return () => clearInterval(interval);
   }, [exampleImageIndex, isImageUploaded]);
 
-  const handleColorCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.value) return;
-    setColorCount(parseInt(event.target.value));
+  const handleColorCountChange = ( newValue: number | null ) => {
+    if (
+      !newValue ||
+      newValue === colorCount ||
+      newValue < minColorCount ||
+      newValue > maxColorCount
+    ){
+      return;
+    }
+
+    setColorCount(newValue);
   };
 
   const handleAccelerationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,119 +145,154 @@ function App() {
   return (
     <div className="App">
       <div className='menu'>
-          <div className='menu-left'>
-            <a href='https://karolplonka.github.io/image-color-palette/'>
-              <div className='title-wrapper'>
+        <div className='menu-left'>
+          <a href='https://karolplonka.github.io/image-color-palette/'>
+            <div className='title-wrapper'>
               <img src={logo} alt='logo' className='logo' />
               <h1>Image Color Palette Exctractor</h1>
-              </div>
-            </a>
-          </div>
-          <div className='menu-right'>
-            <a href="https://github.com/KarolPlonka/image-color-palette" target="_blank" rel="noopener noreferrer">
-              <GitHub size={30} className='github-icon' />
-              github.com/KarolPlonka/image-color-palette
-            </a>
-          </div>
+            </div>
+          </a>
+        </div>
+        <div className='menu-right'>
+          <a href="https://github.com/KarolPlonka/image-color-palette" target="_blank" rel="noopener noreferrer">
+            <GitHub size={30} className='github-icon' />
+            github.com/KarolPlonka/image-color-palette
+          </a>
+        </div>
       </div>
-      <div className='column'>
-        <div
-          className="canvas-wrapper"
-          ref={canvasWrapperRef}
-          style={{ background: gradient }}
-          onMouseEnter={() => setIsHoveringAtCanvas(true)}
-          onMouseLeave={() => setIsHoveringAtCanvas(false)}
-        >
-          <canvas id="imageDisplay" ref={canvasRef} />
+      <div className='column-wrapper'>
+        <div className='column'>
+          <div
+            className="canvas-wrapper"
+            ref={canvasWrapperRef}
+            style={{ background: gradient }}
+            onMouseEnter={() => setIsHoveringAtCanvas(true)}
+            onMouseLeave={() => setIsHoveringAtCanvas(false)}
+          >
+            <canvas id="imageDisplay" ref={canvasRef} />
 
-          <input
-            type="file"
-            onChange={handleImageChange}
-            accept="image/*"
-            id="image-selector"
-          />
+            <input
+              type="file"
+              onChange={handleImageChange}
+              accept="image/*"
+              id="image-selector"
+            />
 
-          {(!isImageUploaded) && <div className="canvas-overlay" />}
+            {(!isImageUploaded) && <div className="canvas-overlay" />}
 
-          {
-            (isHoveringAtCanvas || !isImageUploaded) &&
-            <label htmlFor="image-selector" className="file-input-label">
-              <Upload size={18} className='upload-icon' />
-              <span>Choose an Image</span>
-            </label>
-          }
+            {
+              (isHoveringAtCanvas || !isImageUploaded) &&
+              <label htmlFor="image-selector" className="file-input-label">
+                <Upload size={18} className='upload-icon' />
+                <span>Choose an Image</span>
+              </label>
+            }
 
+          </div>
+
+          <table className="controls-container">
+            <tbody>
+              <tr>
+                <td>
+                  <label htmlFor="color-count">Colors:</label>
+                </td>
+                <td>
+                  <button
+                    className="nr-control-button"
+                    onClick={() => handleColorCountChange(colorCount - 1)}
+                  >
+                    <Minus size={16} />
+                  </button>
+                </td>
+                <td className='slider-cell'>
+                  <input
+                    type="range"
+                    min="1"
+                    max="16"
+                    value={colorCount}
+                    onChange={(event) => handleColorCountChange(event?.target && parseInt(event.target.value) || null)}
+                    />
+                </td>
+                <td>
+                  <button
+                    className="nr-control-button"
+                    onClick={() => handleColorCountChange(colorCount + 1)}
+                  >
+                    <Plus size={16} />
+                  </button>
+                </td>
+                <td>
+                  <input
+                    type = "number"
+                    min = { minColorCount }
+                    max = { maxColorCount }
+                    value= { colorCount}
+                    onChange={(event) => handleColorCountChange(event?.target && parseInt(event.target.value) || null)}
+                    onFocus = {(e) => e.target.select()}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="acceleration-control">
+                    Acceleration:
+                    <Info size={16} className='info-icon' id='acceleration-info' />
+                  </label>
+                  <Tooltip anchorSelect="#acceleration-info">
+                    <div className='tooltip-msg'>
+                      Acceleration variable will reduce the duration of the algorithm,
+                      but it will also reduce the accuracy of the results.
+                      <br /><br />
+                      When set to 1, the algorithm will check every pixel of the image. <br />
+                      When set to 2, it will check every second pixel, and so on.
+                    </div>
+                  </Tooltip>
+                </td>
+                <td>
+                  <button
+                    className="nr-control-button"
+                    onClick={() => setAcceleration(acceleration - 1)}
+                  >
+                    <Minus size={16} />
+                  </button>
+                </td>
+                <td className='slider-cell'>
+                  <input
+                    id='acc'
+                    type="range"
+                    min="1"
+                    max="8"
+                    value={acceleration}
+                    data-value={acceleration}
+                    onChange={handleAccelerationChange}
+                  />
+                </td>
+                <td>
+                  <button
+                    className="nr-control-button"
+                    onClick={() => setAcceleration(acceleration + 1)}
+                  >
+                    <Plus size={16} />
+                  </button>
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    min="1"
+                    max="8"
+                    value={acceleration}
+                    onChange={handleAccelerationChange}
+                    onFocus={(e) => e.target.select()}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <table className="controls-container">
-          <tbody>
-            <tr>
-              <td>
-                <label htmlFor="color-count">Colors:</label>
-              </td>
-              <td>
-                <input
-                  type="range"
-                  min="1"
-                  max="16"
-                  value={colorCount}
-                  onChange={handleColorCountChange}
-                />
-              </td>
-              <td className='input-display'>
-                <input
-                  type="number"
-                  min="1"
-                  max="16"
-                  value={colorCount}
-                  onChange={handleColorCountChange}
-                  onFocus={(e) => e.target.select()}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="acceleration-control">
-                  Acceleration:
-                  <Info size={16} className='info-icon' id='acceleration-info'/>
-                </label>
-                <Tooltip anchorSelect="#acceleration-info">
-                  <div className='tooltip-msg'>
-                    Acceleration variable will reduce the duration of the algorithm, <br/>
-                    but it will also reduce the accuracy of the results.
-                    <br/><br/>
-                    When set to 1, the algorithm will check every pixel of the image. <br/>
-                    When set to 2, it will check every second pixel, and so on.
-                  </div>
-                </Tooltip>
-
-              </td>
-              <td>
-                <input
-                  type="range"
-                  min="1"
-                  max="8"
-                  value={acceleration}
-                  onChange={handleAccelerationChange}
-                />
-              </td>
-              <td>
-                <input
-                  type="number"
-                  min="1"
-                  max="8"
-                  value={acceleration}
-                  onChange={handleAccelerationChange}
-                  onFocus={(e) => e.target.select()}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div className='column' id="palete-display-column">
-        <PaletteDsiplay palette={palette} acc={acceleration} />
+        <div className='column' id="palete-display-column">
+          <PaletteDsiplay palette={palette} acc={acceleration} />
+        </div>
       </div>
     </div>
   );
