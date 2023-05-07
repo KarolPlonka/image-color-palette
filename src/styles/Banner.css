@@ -1,0 +1,66 @@
+.banner {
+    height: fit-content;
+    padding: 3%;
+    border-bottom: 5px solid #ccc;
+    border-radius: 15px;
+    margin-bottom: 5%;
+    display: flex;
+    align-items: center;
+    background-color: #1a1d22;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0px 15px rgba(0, 0, 0);
+}
+
+.banner-left a {
+    text-decoration: none;
+    color: white;
+}
+
+.title-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: calc(4vw + 4vh);
+    height: auto;
+    margin-right: 5%;
+    display: inline-block;
+    -webkit-filter: drop-shadow(0 0px 15px rgba(0, 0, 0));
+    filter: drop-shadow(0 0px 15px rgba(0, 0, 0));
+}
+
+h1 {
+    display: inline-block;
+    font-size: 5vmin;
+    text-shadow: 0 0px 15px rgba(0, 0, 0);
+    margin: 0px;
+}
+
+.banner-left {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+    width: 70%;
+}
+
+.banner-right {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+    width: 30%;
+    font-size: 2.2vmin;
+    font-weight: 300;
+}
+
+.banner-right a {
+    text-decoration: none;
+    transition: color 0.3s;
+    color: white;
+}
+
+.banner-right a:hover {
+    color: rgb(134, 165, 221);
+}

@@ -1,7 +1,9 @@
-import React, {useState, useEffect, useRef} from "react";
-import './PaletteDisplay.css'
+import React, { FC, useState, useEffect, useRef} from "react";
 import { Copy, CheckCircle } from 'react-feather';
+import handleCopyToClipboard from '../utils/ClipboardCopy';
+import getIconSize from '../utils/IconSize';
 
+import '../styles/PaletteDisplay.css'
 
 export interface PaletteColor {
   r: number;
@@ -10,14 +12,14 @@ export interface PaletteColor {
   count: number;
 }
 
-const ColorValue: React.FC<{  title: string, value: string }> = ({ title, value }) => {
-  const [icon, setIcon] = useState(<Copy size={18} className='copy-icon' />);
+const ColorValue: FC<{  title: string, value: string }> = ({ title, value }) => {
+  const [icon, setIcon] = useState(<Copy size={getIconSize(0.7)} className='copy-icon' />);
 
   const copyValue = () => {
     handleCopyToClipboard(value);
-    setIcon(<CheckCircle size={18} className='copied-icon'/>);
+    setIcon(<CheckCircle size={getIconSize(0.7)} className='copied-icon'/>);
     setTimeout(() => {
-      setIcon(<Copy size={18} className='copy-icon' />);
+      setIcon(<Copy size={getIconSize(0.7)} className='copy-icon' />);
     }, 1000);
   }
 
@@ -88,14 +90,3 @@ const PaletteDisplay: React.FC<{ palette: PaletteColor[]; acc: number }> = ({ pa
 
 export default PaletteDisplay;
 
-const handleCopyToClipboard = (value: string) => {
-  const tempInput = document.createElement('input');
-  tempInput.value = value;
-  document.body.appendChild(tempInput);
-
-  tempInput.select();
-  tempInput.setSelectionRange(0, 99999); // For mobile devices
-
-  document.execCommand('copy');
-  document.body.removeChild(tempInput);
-};
