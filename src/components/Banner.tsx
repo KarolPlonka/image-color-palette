@@ -4,13 +4,13 @@ import getIconSize from '../utils/IconSize';
 
 import '../styles/Banner.css';
 
-export const Banner: FC<{ title: string, logo: string, githubLink: string }> = ({ title, logo, githubLink }) => {
+export const Banner: FC<{ title: string, logo: string, homeLink: string, githubLink: string }> = ({ title, logo, homeLink, githubLink }) => {
 
     return (
         <div className='banner'>
 
             <div className='banner-left'>
-                <a href={githubLink}>
+                <a href = { homeLink }>
                     <div className='title-wrapper'>
                         <img src={logo} alt='logo' className='logo' />
                         <h1>{title}</h1>

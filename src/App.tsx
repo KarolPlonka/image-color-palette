@@ -34,35 +34,37 @@ function App() {
   return (
     <div className="App">
       <Banner
-        title="Exctract Colors From Image"
-        logo={logo}
-        githubLink="https://github.com/KarolPlonka/image-color-palette"
+        title = "Exctract Colors From Image"
+        logo = { logo }
+        homeLink = "https://karolplonka.github.io/image-color-palette/"
+        githubLink = "github.com/KarolPlonka/image-color-palette"
       />
 
       <div className='column-wrapper'>
         <div className='column'>
+
           <Canvas
-            colorCount={colorCount}
-            acceleration={acceleration}
-            setPalette={setPalette}
+            colorCount = { colorCount }
+            acceleration = { acceleration }
+            setPalette = { setPalette }
           />
 
           <table className="controls-container" >
             <tbody>
               <ControlRow 
-                title = {"Colors"}
-                value = {colorCount}
-                setValue = {setColorCount}
-                min = {minColorCount}
-                max = {maxColorCount}
+                title = {" Colors" }
+                value = { colorCount }
+                setValue = { setColorCount }
+                min = { minColorCount }
+                max = { maxColorCount }
               />
               <ControlRow
-                title = {"Acceleration"}
-                value = {acceleration}
-                setValue = {setAcceleration}
-                min = {minAcceleration}
-                max = {maxAcceleration}
-                tooltip = {accelerationTip?.toString()}
+                title = { "Acceleration" }
+                value = { acceleration }
+                setValue = { setAcceleration }
+                min = { minAcceleration }
+                max = { maxAcceleration }
+                tooltip = { accelerationTip?.toString() }
               />
             </tbody>
           </table>
@@ -72,6 +74,7 @@ function App() {
         <div className='column' id="palete-display-column">
           <PaletteDsiplay palette={palette} acc={acceleration} />
         </div>
+        
       </div>
     </div>
   );
