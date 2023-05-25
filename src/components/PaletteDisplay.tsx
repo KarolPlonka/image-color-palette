@@ -1,44 +1,87 @@
-import React, { FC, useState, useEffect, useRef} from "react";
+import React, { ReactNode, FC, useState, useEffect, useRef, useMemo} from "react";
+import { useSignal } from "../utils/CustomHooks";
 import { Copy, CheckCircle } from 'react-feather';
-import handleCopyToClipboard from '../utils/ClipboardCopy';
-import getIconSize from '../utils/IconSize';
 
 import '../styles/PaletteDisplay.css'
 
-export interface PaletteColor {
-  r: number;
-  g: number;
-  b: number;
-  count: number;
+import handleCopyToClipboard from '../utils/ClipboardCopy';
+import getIconSize from '../utils/IconSize';
+import getGradientString from "../utils/GradientString";
+import PaletteColor,{
+  PaletteColorToHex,
+  PaletteColorToRGB, 
+} from "../utils/PaletteColor";
+import { get } from "http";
+
+const CopyIcon: FC<{ size: number, animationTrigger: number }> = ({ size, animationTrigger }) => {
+  const toCopyIcon = useMemo(() => <Copy size={getIconSize(size)} className='copy-icon' />, [size]);
+  const copiedIcon = useMemo(() => <CheckCircle size={getIconSize(size)} className='copied-icon'/>, [size]);
+
+  const [icon, setIcon]= useState<ReactNode>(toCopyIcon);
+
+  useEffect(() => {
+    if(!animationTrigger) return;
+
+    setIcon(copiedIcon);
+    setTimeout(() => {
+      setIcon(toCopyIcon);
+    }, 1000);
+
+  }, [animationTrigger, toCopyIcon, copiedIcon])
+
+  return(<>{ icon }</>)
 }
 
-const ColorValue: FC<{  title: string, value: string }> = ({ title, value }) => {
-  const [icon, setIcon] = useState(<Copy size={getIconSize(0.7)} className='copy-icon' />);
+const CopyAllButton: FC<{
+  label: string,
+  palette: PaletteColor[],
+  paletteColorParser: (palette: PaletteColor) => string
+}> = ({ label, palette, paletteColorParser }) => {
+  const [animationSignal, sendAnimationSignal] = useSignal();
+  
+  const handleButtonClick = () => {
+    const text = palette.map((color) => paletteColorParser(color)).join('\n');
+    handleCopyToClipboard(text);
+    sendAnimationSignal();
+  }
+
+  return(
+      <div
+        className="copy-all-button"
+        onClick={handleButtonClick}
+        style = {{background: getGradientString(palette)}}
+      >
+        {label}
+        <CopyIcon size={1} animationTrigger={animationSignal}/>
+      </div>
+  )
+}
+
+
+const ColorValue: FC<{ label: string, value: string }> = ({ label, value }) => {
+  const [animationSignal, sendAnimationSignal] = useSignal();
 
   const copyValue = () => {
     handleCopyToClipboard(value);
-    setIcon(<CheckCircle size={getIconSize(0.7)} className='copied-icon'/>);
-    setTimeout(() => {
-      setIcon(<Copy size={getIconSize(0.7)} className='copy-icon' />);
-    }, 1000);
+    sendAnimationSignal();
   }
 
   return (
     <div className="color-value-wrapper">
-      <span className="color-title">{title}</span>
+      <span className="color-value-label">{label}</span>
       <span className="color-value" onClick={copyValue}>
-        {value} {icon}
+        {value} <CopyIcon size={0.7} animationTrigger={animationSignal}/>
       </span>
     </div>
   );
 };
 
 const ColorDiv: React.FC<{ color: PaletteColor; percentage: number, acc: number }> = ({ color, percentage, acc }) => {
-  const [isInside, setIsInside] = useState(false);
+  const [isInside, setIsInside] = useState<boolean>(false);
 
   const divStyle = {
     width: `${percentage * 100}%`,
-    backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`,
+    backgroundColor: PaletteColorToRGB(color),
     transition: `width ${2 / acc}s ease-out, background-color 1s ease-in`,
   };
 
@@ -54,12 +97,12 @@ const ColorDiv: React.FC<{ color: PaletteColor; percentage: number, acc: number 
       <div className="color-div" style={divStyle}>
         <div className={`color-values-container`} style={positionStyle}>
           <ColorValue
-            title="RGB:"
-            value={`rgb(${color.r}, ${color.g}, ${color.b})`}
+            label="RGB:"
+            value={PaletteColorToRGB(color)}
           />
           <ColorValue
-            title="HEX:"
-            value={`#${color.r.toString(16)}${color.g.toString(16)}${color.b.toString(16)}`.toUpperCase()}
+            label="HEX:"
+            value={PaletteColorToHex(color).toUpperCase()}
           />
         </div>
       </div>
@@ -74,16 +117,28 @@ const PaletteDisplay: React.FC<{ palette: PaletteColor[]; acc: number }> = ({ pa
 
   return (
     <div className="palette-container" ref={paletteContainerRef}>
-      {
-      palette.map((color, index) => (
+      {palette.map((color, index) => (
         <ColorDiv
           key={index}
           color={color}
           percentage={color.count / pixelSum}
           acc={acc}
         />
-      ))
-      }
+      ))}
+
+      <div className="copy-all-buttons-wrapper" >
+        <CopyAllButton
+          palette={palette}
+          paletteColorParser={PaletteColorToRGB}
+          label="RGB"
+        />
+        <CopyAllButton
+          palette={palette}
+          paletteColorParser={PaletteColorToHex}
+          label="HEX"
+        />
+      </div>
+      
     </div>
   );
 };

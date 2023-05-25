@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import './App.css';
+import './styles/App.css';
 import 'react-tooltip/dist/react-tooltip.css'
 
 // components
 import Banner from './components/Banner';
 import Canvas from './components/Canvas'; 
 import ControlRow from './components/Controls';
-import PaletteDsiplay, { PaletteColor } from './components/PaletteDisplay';
+import PaletteDsiplay from './components/PaletteDisplay';
 
+// utils
+import PaletteColor from './utils/PaletteColor';
 
 // logo
 import logo from './logo.png';

@@ -4,6 +4,7 @@
     padding-left: 0px;
     margin-left: 20px;
     transition: height 2s ease-in-out;
+    overflow: hidden;
 }
 
 .color-div-container{
@@ -71,10 +72,59 @@
     margin-bottom: -3px;
 }
 
-.color-title{
+.color-value-label{
     font-size: calc(3px + 2vmin);
     font-weight: bold;
     margin: 5px;
-    text-shadow: rgb(0, 0, 0) 0px 0 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 1px 0 1px, rgb(0, 0, 0) 1px 1px 1px;
+    text-shadow:
+        0.07em 0 black,
+        0 0.07em black,
+        -0.07em 0 black,
+        0 -0.07em black;
 }
 
+.copy-all-buttons-wrapper{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin-right: 3vmin;
+    margin-bottom: 3vmin;
+    display: flex;
+}
+
+
+.copy-all-button{
+    position: relative;
+    margin: 10px;
+    padding: 7px;
+    border-radius: 10px;
+    font-size: calc(1px + 3vmin);
+    font-weight: 200;
+    color: #222;
+    transition: all 0.1s ease-out;
+    font-weight: 800;
+    text-shadow:
+        0.03em 0 white,
+        0 0.03em white,
+        -0.03em 0 white,
+        0 -0.03em white;
+
+    box-shadow: 0 0px 15px rgba(0, 0, 0);
+}
+
+.copy-all-button:hover{
+    cursor: pointer;
+    color: #fff;
+    font-weight: 600;
+    text-shadow:
+        0.1em 0 black,
+        0 0.1em black,
+        -0.1em 0 black,
+        0 -0.1em black;
+}
+
+@media screen and (max-width: 1000px) {
+    .copy-all-buttons-wrapper {
+        display: block;
+    }
+}
